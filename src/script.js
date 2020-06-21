@@ -2,29 +2,38 @@ const { ipcRenderer, desktopCapturer, ipcMain } = require("electron")
 const path = require('path')
 
 function fullscreenShot() {
-
+console.log("Taking screenShot")
     desktopCapturer.getSources({ types: ['window', 'screen'] }).then(async sources => {
         sources.forEach(async source => {
-            if ((source.name === "Entire screen") ||
+            console.log(source)
+            if ((source.name === "Entire Screen") ||
                 (source.name === "Screen 1") ||
                 (source.name === "Screen 2")) {
-                const stream = await navigator.mediaDevices.getUserMedia({
-                    audio: false,
-                    video: {
-                        mandatory: {
-                            maxWidth: 8000,
-                            chromeMediaSource: 'desktop',
-                            chromeMediaSourceId: source.id,
-                        }
+
+                    try {
+                        const stream = await navigator.mediaDevices.getUserMedia({
+                            audio: false,
+                            video: {
+                                mandatory: {
+                                    maxWidth: 8000,
+                                    chromeMediaSource: 'desktop',
+                                    chromeMediaSourceId: source.id,
+                                }
+                            }
+                        })
+                        console.log(stream)
+                        handleStream(stream)
+                    } catch (error) {
+                        console.log(error)
                     }
-                })
-                handleStream(stream)
+               
 
             }
         })
     })
 
     function handleStream(stream) {
+        console.log(" handleStream")
         const video = document.createElement("video");
         video.srcObject = stream
         video.onloadedmetadata = () => {
@@ -52,7 +61,7 @@ function fullscreenShot() {
     function sendNotification(data) {
         const notification = new Notification("Screenshot", {
             body: data.fileName,
-            icon: path.join(__dirname, '../assets/icons/Icon_256x256.png'),
+            icon: path.join(__dirname, '../assets/icons/icon.png'),
 
         })
         notification.addEventListener("click", function () {

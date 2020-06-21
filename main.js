@@ -37,7 +37,7 @@ function createWindow() {
     width: 600,
     height: 600,
     backgroundColor: "#eee",
-    show: false,
+    // show: false,
     icon: iconPath,
     webPreferences: {
       nodeIntegration: true,
@@ -47,12 +47,7 @@ function createWindow() {
   if (isDev) {
     win.webContents.openDevTools();
   }
-  win.once("ready-to-show", () => {
-    // win.show();
-    setTimeout(() => {
-      win.webContents.send("cpu_name", os.cpus()[0].model);
-    }, 3000);
-  });
+
 }
 function createPreferenceWindow() {
 
@@ -80,7 +75,7 @@ function createPreferenceWindow() {
 }
 app.whenReady().then(() => {
   createWindow();
-  globalShortcut.register('Cmd+Shift+D', () => {
+  globalShortcut.register('CmdOrCtrl+Shift+D', () => {
     console.log('ScreenShot Trigger')
     win.webContents.send('take-screenshot')
     player.play('./assets/picture.wav', function (err) {
@@ -118,6 +113,7 @@ ipcMain.handle("show-dialog", async (event) => {
   return destination
 })
 ipcMain.handle("screenshot", (event, base64Image) => {
+  console.log(" received ScreenShot")
   const base64Data = base64Image.replace(/^data:image\/png;base64,/, "");
   const fileName = `ScreenShot-${Date.now()}.png`
   const filePath = path.join(destination, fileName)
@@ -136,8 +132,8 @@ ipcMain.handle('showDialog', async (event) => {
   })
 
   const filePath = result.filePaths[0]
-  preferences.set('dest', filePath)
-  destination = preferences.get("dest")
+  preferences.set('destination', filePath)
+  destination = preferences.get("destination")
   // ipcRenderer.send('change-dest', filePath)
   return destination
 

@@ -1,12 +1,15 @@
-const { app } = require('electron')
+const { app, shell } = require('electron')
 const fs = require('fs')
 const path = require('path')
-const os = require('os')
 
 class Store {
 
     constructor(options) {
+        console.log(" Start")
         const userDataPath = app.getPath("userData")
+        console.log(" end")
+        shell.openPath(userDataPath)
+
         this.path = path.join(userDataPath, options.configName + '.json')
         this.data = parseDataFile(this.path, options.defaults)
     }
