@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline'" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preferences</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .preferences {
+            padding: 10px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .group {
+            padding: 10px;
+            /* height: 100vh; */
+            display: flex;
+
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .group>input {
+            flex-grow: 1;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="preferences">
+        <div class="group">
+            <label for="dest-path">Recording Path</label>
+            <input id='dest-path' name="dest-path" type="text">
+            <button onclick="choose()">Destination</button>
+        </div>
+        <script src="./script.js"></script>
+    </div>
+</body>
+
+</html>
